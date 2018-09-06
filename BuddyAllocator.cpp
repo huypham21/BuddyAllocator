@@ -26,7 +26,7 @@ BuddyAllocator::BuddyAllocator (uint _basic_block_size, uint _total_memory_lengt
 
   for(int i =0;i<=steps;i++){
     freeList.push_back(LinkedList());
-    freeListMap.insert(block_size, i);
+    // freeListMap.insert(block_size, i);
     block_size=block_size/2;
     }
   // insert ();  
@@ -57,7 +57,7 @@ char* BuddyAllocator::alloc(uint _length) {
   int total_request = _length +sizeof(BlockHeader);
   float factor = log(total_request)/log(2);
   int pow_2_ceil = pow(2, ceil(factor));
-  int index = freeListMap[pow_2_ceil];
+  int index = int(log2(total_memory_length/pow_2_ceil)+1);
   // bool flag=true;
   int steps=0;
   char* freeBlock;

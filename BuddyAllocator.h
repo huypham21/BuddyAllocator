@@ -66,7 +66,7 @@ private:
 	/* declare member variables as necessary */
 	vector<LinkedList> freeList; 
 	char* begin;
-	unordered_map<int, int> freeListMap;
+	// unordered_map<int, int> freeListMap;
 	// LinkedList *FreeList;
 	// LinkedList FreeList[];
 
