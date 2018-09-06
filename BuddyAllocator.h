@@ -30,9 +30,6 @@ class BlockHeader{
 	int size;
 	BlockHeader* next;
 
-// type cast
-	// header *h = (Header*)a;
-	// h-> dree = true;h->size=512
 	// BlockHeader (bool Free, int size, BlockHeader *next );
 	
 };
@@ -47,12 +44,19 @@ public:
 	BlockHeader* getHead(){return head;}
 	bool if_free(){return head-> Free;}
 	void insert (BlockHeader* b){	// adds a block to the list
-		head->next=b;
+		// if(head->next==NULL){
+			// b->next->next=head->next;
+			head->next = b;
+			head=b;
+		// }
+		
 	}
 	
 	void remove (BlockHeader* b){  // removes a block from the list
 		//b should point to the block before the block we want to delete
 		// b->prev->next = b->next;
+		head->next=b->next;
+		b->next=NULL;
 	}
 };
 

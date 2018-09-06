@@ -58,16 +58,32 @@ char* BuddyAllocator::alloc(uint _length) {
   float factor = log(total_request)/log(2);
   int pow_2_ceil = pow(2, ceil(factor));
   int index = freeListMap[pow_2_ceil];
-  bool flag=true;
+  // bool flag=true;
+  int steps=0;
+  char* freeBlock;
   try
   {
-    for (int i = index; i>=0;i--){ 
+    if (freeList[index].getHead() != NULL ){return (char*)freeList[index].getHead();}
+    for (int i = index-1; i>=0;i--){ 
       if (freeList[i].getHead() != NULL ){
-        char* freeBlock = (char*)freeList[i].getHead();
-        if (freeList[i].if_free()){
-          return freeBlock;
-        }        
-      }
+        // if(i!=index){
+        //   for
+        // }
+        // if (freeList[i].if_free()){}
+        freeBlock = (char*)freeList[i].getHead();
+          for(int i = 0;i<=steps;i++){
+            split(freeBlock);
+            BlockHeader* newBlock=(BlockHeader*)freeBlock;
+            if(newBlock->size==pow_2_ceil){return freeBlock;}
+          }
+        }
+        steps++;
+      // else{
+      //   if()
+      //   split(freeBlock);
+      //   i+=2;
+      // }        
+      
     }throw "No available memory. ";
   }
   catch (string e)
@@ -112,6 +128,7 @@ char* BuddyAllocator::split (char* block){
   x->next->next = NULL;
 
   freeList[index+1].insert(x);
+  freeList[index].remove((BlockHeader*)block);
   
   return (char*) x;
 }
