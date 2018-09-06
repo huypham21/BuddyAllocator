@@ -26,7 +26,9 @@ BuddyAllocator::BuddyAllocator (uint _basic_block_size, uint _total_memory_lengt
 
   for(int i =0;i<=steps;i++){
     freeList.push_back(LinkedList());
-    freeListMap.insert(block_size, i);
+    // freeListMap.insert(make_pair(block_size, i));
+    freeListMap[block_size] = i;
+ 
     block_size=block_size/2;
     }
   // insert ();  
@@ -37,6 +39,10 @@ BuddyAllocator::BuddyAllocator (uint _basic_block_size, uint _total_memory_lengt
   h->next=NULL;
   h->Free=true;
   freeList[0].insert(h);
+  for (int i=0; i<freeList.size();i++){
+    cout<< "\n \n Stuff inside freeList: \n \n" << freeList[i].getHead()->size << " (size) ... "<<freeList[i].getHead()->Free << " (Free) ... "<<freeList[i].getHead()->next << " (Next) \n";
+    
+  }
   // avail = (BlockHeader*)(begin)+sizeof(head);
   // FreeList->block = new char [total_memory_length/basic_block_size];
   
@@ -72,9 +78,9 @@ char* BuddyAllocator::alloc(uint _length) {
         // if (freeList[i].if_free()){}
         freeBlock = (char*)freeList[i].getHead();
           for(int i = 0;i<=steps;i++){
-            split(freeBlock);
-            BlockHeader* newBlock=(BlockHeader*)freeBlock;
-            if(newBlock->size==pow_2_ceil){return freeBlock;}
+            
+            BlockHeader* newBlock=(BlockHeader*)split(freeBlock);
+            if(newBlock->size==pow_2_ceil){return (char*)newBlock;}
           }
         }
         steps++;
@@ -97,6 +103,7 @@ int BuddyAllocator::free(char* _a) {
   /* Same here! */
   // delete _a;
   // return 0;
+
   free(_a);
 }
 
@@ -120,7 +127,7 @@ char* BuddyAllocator::split (char* block){
   int index = freeListMap[x->size];
   
   x->size/=2;
-  x->next= x + x->size;
+  x->next= (BlockHeader*)(block + x->size);
   x->Free=true;
 
   x->next->size = x->size;

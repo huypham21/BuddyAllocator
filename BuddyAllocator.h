@@ -57,6 +57,7 @@ public:
 		// b->prev->next = b->next;
 		head->next=b->next;
 		b->next=NULL;
+		b->Free=false;
 	}
 };
 
