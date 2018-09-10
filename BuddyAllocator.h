@@ -40,24 +40,34 @@ private:
 	BlockHeader* head=NULL;		// you need a head of the list
 	// char* block;
 public:
-	BlockHeader* setHead(char* memStart){ head->next=(BlockHeader*) memStart;}
+	BlockHeader* setHead(char* memStart){ head=(BlockHeader*) memStart;}
 	BlockHeader* getHead(){return head;}
+	BlockHeader* traverse();
 	bool if_free(){return head-> Free;}
 	void insert (BlockHeader* b){	// adds a block to the list
-		// if(head->next==NULL){
-			// b->next->next=head->next;
+		cout << "\n Insert: "<<b->size<<endl;
+		if(head==NULL){ head=b; }
+		else{
+/* 			BlockHeader* last = traverse();		
+			last->next=b; 
 			head->next = b;
+			*/
+			b->next=head;
 			head=b;
-		// }
+		 }
 		
 	}
 	
 	void remove (BlockHeader* b){  // removes a block from the list
 		//b should point to the block before the block we want to delete
 		// b->prev->next = b->next;
-		head->next=b->next;
-		b->next=NULL;
-		b->Free=false;
+		
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+		if(b->next!=NULL && head->size==b->next->size)head=b->next;
+		//b=&b[-1];
+		 else head = NULL;
+		//b->next=NULL;
+		//b->Free=false;
 	}
 };
 
@@ -66,7 +76,7 @@ class BuddyAllocator{
 private:
 	/* declare member variables as necessary */
 	vector<LinkedList> freeList; 
-	char* begin;
+	char* initial;
 	unordered_map<int, int> freeListMap;
 	// LinkedList *FreeList;
 	// LinkedList FreeList[];
