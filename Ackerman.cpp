@@ -67,6 +67,8 @@ void Ackerman::test(BuddyAllocator *_ba) {
     int result = Recurse(n, m); // compute ackerman value
     gettimeofday(&tp_end, 0);   // stop timer
     
+ba->debug();
+
     cout<<"Ackerman("<<n<<", "<<m<<"): "<<result<<endl; 
     cout<<"Time taken: "<< get_time_diff(&tp_start, &tp_end) << endl;
     cout<<"Number of allocate/free cycles: "<<this->num_allocations<<endl<<endl; 
@@ -86,6 +88,9 @@ int Ackerman::Recurse(int a, int b) {
   char* mem = ba->alloc(to_alloc);  // request memory
   num_allocations++;
   
+  cout << "REQ: " << (unsigned long)mem << " Size: " << to_alloc << endl;
+
+
   if (mem != NULL) {
 
     // testing the allocated memory
@@ -107,6 +112,8 @@ int Ackerman::Recurse(int a, int b) {
             break;
         }
     }
+
+     cout << "FREE: " << (unsigned long)mem << endl;
     ba->free(mem);
   }
 

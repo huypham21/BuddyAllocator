@@ -46,12 +46,8 @@ public:
 	bool if_free(){return head-> Free;}
 	void insert (BlockHeader* b){	// adds a block to the list
 		cout << "\n Insert: "<<b->size<<endl;
-		if(head==NULL){ head=b; }
+		if(head==NULL){ head=b; b->next=NULL; }
 		else{
-/* 			BlockHeader* last = traverse();		
-			last->next=b; 
-			head->next = b;
-			*/
 			b->next=head;
 			head=b;
 		 }
@@ -61,13 +57,33 @@ public:
 	void remove (BlockHeader* b){  // removes a block from the list
 		//b should point to the block before the block we want to delete
 		// b->prev->next = b->next;
-		
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-		if(b->next!=NULL && head->size==b->next->size)head=b->next;
+		// if(b->next!=NULL && head->size==b->next->size)head=b->next;
 		//b=&b[-1];
-		 else head = NULL;
+		//  else head = NULL;
 		//b->next=NULL;
 		//b->Free=false;
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+		b->Free=false;
+		
+		int total_block = 0;
+		BlockHeader* curr = head;
+		BlockHeader* prev =NULL;
+
+		cout<<"\n \n";
+	while(curr!=NULL){
+		// cout<<"[ Block size: " <<curr->size <<"]  ->  ";
+		prev = curr;
+		curr=curr->next;
+		if (curr==b) {
+			prev->next = curr->next;
+			curr->next=NULL;
+			cout<<"\n \n total_block: "<<total_block;break;
+		}
+		total_block++;
+	}
+	if(curr==NULL){head=b->next;}
+	
+		
 	}
 };
 
