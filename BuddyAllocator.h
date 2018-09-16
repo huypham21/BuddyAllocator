@@ -15,11 +15,14 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-
+#include <stdexcept>
 using namespace std;
 typedef unsigned int uint;
 
 /* declare types as you need */
+struct NotEnoughMemException : std::range_error {
+  explicit NotEnoughMemException(char const* msg=NULL): range_error(msg) {}
+};
 
 class BlockHeader{
 	// decide what goes here
@@ -72,14 +75,14 @@ public:
 		BlockHeader* curr = head;
 		BlockHeader* prev =head;
 	
-		cout<<"\n \n";
+		// cout<<"\n \n";
 	while(curr!=NULL){
 		
 
 		prev = curr;
 		curr=curr->next;
 		if (curr==b) {
-			cout << "found b to remove: " <<endl;
+			// cout << "found b to remove: " <<endl;
  			prev->next = curr->next;
 			curr->next=NULL;
 			// cout<<"\n \n total_block: "<<total_block;

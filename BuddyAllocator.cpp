@@ -51,8 +51,8 @@ char* BuddyAllocator::alloc(uint _length) {
   BlockHeader* list_head = freeList[index].getHead();
   int moves=0;
   char* freeBlock;
-  try
-  {
+  // try
+  // {
     if (list_head != NULL ){
 		freeList[index].remove(list_head);
 		moves = 0;
@@ -73,12 +73,13 @@ char* BuddyAllocator::alloc(uint _length) {
         }
         moves++;   
       
-    }throw "No available memory. ";
-  }
-  catch (string e)
-  {
-    cout << "Please request another memory size " << e << '\n';
-  }
+    }throw NotEnoughMemException("Not enough memory. Please request another memory size.");
+
+  // }
+  // catch (string e)
+  // {
+  //   cout << "Please request another memory size " << e << '\n';
+  // }
   return NULL;
 }
 
